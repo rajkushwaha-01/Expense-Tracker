@@ -1,8 +1,8 @@
 import express from "express";
 
 import {
-  getFinancialAnalyticsController,
-} from "../controllers/analytics.controller.js";
+  analyzeFinancialSpendingController,
+} from "../controllers/ai.controller.js";
 
 import authMiddleware from "../middleware/auth.middleware.js";
 
@@ -11,8 +11,8 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.get(
-  "/",
-  getFinancialAnalyticsController
+  "/spending-analysis",
+  analyzeFinancialSpendingController
 );
- 
+
 export default router;

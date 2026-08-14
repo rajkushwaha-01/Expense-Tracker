@@ -10,6 +10,7 @@ import recurringRouter from "./routes/recurring.routes.js";
 import incomeRouter from "./routes/income.routes.js";
 import accountRouter from "./routes/account.routes.js";
 import splitRouter from "./routes/split.routes.js";
+import aiRouter from "./routes/ai.routes.js";
 
 
 const app = express();
@@ -29,10 +30,11 @@ app.use(
 app.use("/api/auth", authRouter);
 app.use("/api/expenses", expenseRouter);
 app.use("/api/analytics", analyticsRouter);
-app.use("/api/budget", budgetRouter);
+app.use("/api/budget", budgetRouter); 
 app.use("/api/recurring", recurringRouter);
 app.use("/api/income", incomeRouter);
 app.use("/api/accounts", accountRouter);
 app.use("/api/splits", splitRouter);
+app.use("/api/ai", aiRouter);
 
 export default app;
