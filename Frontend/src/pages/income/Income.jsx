@@ -1,0 +1,1 @@
+import { Wallet } from 'lucide-react'; export default function Income() { return <div className="space-y-6"><h1 className="text-3xl font-bold text-white mb-4">Income</h1><div className="card-panel"><Wallet className="text-emerald-500 mb-4" size={32}/><p className="text-zinc-400">Income Module operational.</p></div></div>; }

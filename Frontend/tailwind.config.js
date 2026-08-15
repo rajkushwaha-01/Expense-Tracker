@@ -1,0 +1,1 @@
+export default { content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'], theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: { background: '#0a0a0c', card: '#141417', cardHover: '#1c1c21', primary: '#7c3aed', primaryHover: '#6d28d9', border: '#27272a', textMain: '#f4f4f5', textMuted: '#a1a1aa' } } }, plugins: [] };
