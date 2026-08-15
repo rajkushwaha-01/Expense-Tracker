@@ -7,6 +7,15 @@ import {
   analyzeSpending,
 } from "../ai/services/spending-analysis.service.js";
 
+import {
+  askFinancialQuestion,
+} from "../ai/services/financial-question.service.js";
+
+import {
+  getFinancialContext,
+} from "../ai/services/financial-context.service.js";
+
+
 export const analyzeFinancialSpendingController = async (
   req,
   res
@@ -190,6 +199,68 @@ export const analyzeFinancialSpendingController = async (
       success: false,
       message:
         "Unable to analyze financial data",
+    });
+  }
+};
+
+
+export const askFinancialQuestionController = async (
+  req,
+  res
+) => {
+  try {
+    const userId = req.user.userId;
+
+    const { question } = req.body;
+
+    if (!question || typeof question !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Question is required",
+      });
+    }
+
+    const trimmedQuestion = question.trim();
+
+    if (!trimmedQuestion) {
+      return res.status(400).json({
+        success: false,
+        message: "Question cannot be empty",
+      });
+    }
+
+    if (trimmedQuestion.length > 1000) {
+      return res.status(400).json({
+        success: false,
+        message: "Question is too long",
+      });
+    }
+
+    // Get ONLY this user's financial data
+    const financialData =
+      await getFinancialContext(userId);
+
+    // Ask AI
+    const answer = await askFinancialQuestion(
+      trimmedQuestion,
+      financialData
+    );
+
+    return res.status(200).json({
+      success: true,
+      question: trimmedQuestion,
+      answer,
+    });
+  } catch (error) {
+    console.error(
+      "AI Financial Question Error:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message:
+        "Unable to answer financial question",
     });
   }
 };
