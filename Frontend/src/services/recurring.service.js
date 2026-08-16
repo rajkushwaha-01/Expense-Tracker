@@ -1,1 +1,0 @@
-import api from './api'; export const recurringService = { getRecurringExpenses: async () => (await api.get('/recurring')).data, createRecurringExpense: async (data) => (await api.post('/recurring', data)).data, deleteRecurringExpense: async (id) => (await api.delete(`/recurring/${id}`)).data };

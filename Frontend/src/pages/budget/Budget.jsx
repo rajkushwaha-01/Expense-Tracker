@@ -1,1 +1,0 @@
-import { PiggyBank } from 'lucide-react'; export default function Budget() { return <div className="space-y-6"><h1 className="text-3xl font-bold text-white mb-4">Budget</h1><div className="card-panel"><PiggyBank className="text-primary mb-4" size={32}/><p className="text-zinc-400">Budget Module operational.</p></div></div>; }
