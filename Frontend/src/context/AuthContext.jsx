@@ -9,7 +9,7 @@ import {
   getMeApi,
   loginApi,
   registerApi,
-  clearAuthCookie,
+  logoutApi,
 } from "../api/auth";
 
 const AuthContext = createContext(null);
@@ -48,9 +48,14 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const logout = () => {
-    clearAuthCookie();
-    setUser(null);
+  const logout = async () => {
+    try {
+      await logoutApi();
+    } finally {
+      // Clear local state regardless of whether the request succeeded,
+      // so the UI never gets stuck showing a logged-in user.
+      setUser(null);
+    }
   };
 
   return (

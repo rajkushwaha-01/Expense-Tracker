@@ -1,0 +1,12 @@
+{
+  "name": "finora",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Finora - builds the frontend into Backend/public and runs the backend, which serves both.",
+  "scripts": {
+    "build": "npm install --prefix Frontend && npm run build --prefix Frontend && npm install --prefix Backend",
+    "start": "npm start --prefix Backend",
+    "dev:backend": "npm run dev --prefix Backend",
+    "dev:frontend": "npm run dev --prefix Frontend"
+  }
+}

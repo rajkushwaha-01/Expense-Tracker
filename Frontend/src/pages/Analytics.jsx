@@ -127,7 +127,7 @@ export default function Analytics() {
       )}
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="card p-6">
+        <div className="card p-6 ">
           <h3 className="font-semibold text-white mb-4">
             Spending by Category
           </h3>

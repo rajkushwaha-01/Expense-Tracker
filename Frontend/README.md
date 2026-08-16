@@ -32,24 +32,24 @@ update-profile route.
 
 ```bash
 npm install
-cp .env.example .env   # point VITE_API_URL at your backend if it's not on :3000
 npm run dev
 ```
 
-The app runs on `http://localhost:5173` by default — this **must** match your
-backend's CORS config (`Backend/src/app.js` currently allows exactly this
-origin).
+No `.env` needed for local dev: API calls go to the relative path `/api`,
+and Vite's dev server proxies that to the backend on `:3000` (see
+`vite.config.js`). Make sure the backend is running first (`npm run dev`
+inside `Backend/`, with `MONGO_URI`, `JWT_SECRET`, and `GOOGLE_API_KEY` set
+in its `.env`) so the frontend has something to talk to.
 
-Make sure your backend is running first (`npm run dev` inside `Backend/`,
-with `MONGO_URI`, `JWT_SECRET`, and `GOOGLE_API_KEY` set in its `.env`) so the
-frontend has something to talk to.
+`.env.example` is only relevant if you deploy this frontend as a separate
+service from the backend — see the root `DEPLOYMENT.md` for the default
+same-domain setup and how to split them if you ever need to.
 
 ## Notes on auth
 
-The backend signs a JWT and sets it via `res.cookie("token", token)` with no
-`httpOnly` flag, so the cookie is readable/clearable from the browser. There's
-no `/logout` route, so "Log out" simply clears that cookie client-side and
-resets local state — same effect, no backend change needed.
+The backend signs a JWT and sets it via an `httpOnly`, `sameSite: "lax"`
+cookie — not readable or clearable from JS. `POST /api/auth/logout` clears
+it server-side; "Log out" calls that endpoint.
 
 ## Stack
 

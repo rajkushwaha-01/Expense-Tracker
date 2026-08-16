@@ -2,6 +2,18 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/user.model.js";
 
+// Frontend and backend are served from the same origin (Express serves the
+// built frontend directly), so SameSite=Lax is enough - no need for
+// SameSite=None, which would require Secure and only matters cross-site.
+// `secure` still toggles on NODE_ENV so plain-http local dev keeps working.
+const isProd = process.env.NODE_ENV === "production";
+const authCookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days, matches JWT expiresIn
+};
+
 // =========================
 // REGISTER
 // =========================
@@ -54,7 +66,7 @@ export const registerController = async (req, res) => {
     );
 
     // Store JWT in HTTP-only cookie
-    res.cookie("token", token);
+    res.cookie("token", token, authCookieOptions);
 
     return res.status(201).json({
       success: true,
@@ -130,7 +142,7 @@ export const loginController = async (req, res) => {
     );
 
     // Store JWT in HTTP-only cookie
-    res.cookie("token", token,);
+    res.cookie("token", token, authCookieOptions);
 
     return res.status(200).json({
       success: true,
@@ -195,4 +207,22 @@ export const getMeController = async (req, res) => {
       message: "Invalid or expired token",
     });
   }
+};
+
+// =========================
+// LOGOUT
+// =========================
+export const logoutController = async (req, res) => {
+  // Clear options must mirror the cookie's set options (httpOnly/secure/
+  // sameSite) or some browsers won't remove it.
+  res.clearCookie("token", {
+    httpOnly: authCookieOptions.httpOnly,
+    secure: authCookieOptions.secure,
+    sameSite: authCookieOptions.sameSite,
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 };

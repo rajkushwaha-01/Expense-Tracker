@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// Point this at your backend. Configure via .env -> VITE_API_URL
-// Falls back to localhost:3000 (the backend's default PORT).
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+// Relative by default: in dev, Vite's proxy forwards /api to the backend;
+// in production, Express serves this build itself so /api is same-origin.
+// Only set VITE_API_URL if you deploy the frontend as a separate service.
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 const client = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // send/receive the httpOnly-less "token" cookie
+  withCredentials: true, // send/receive the httpOnly "token" cookie
   headers: {
     "Content-Type": "application/json",
   },

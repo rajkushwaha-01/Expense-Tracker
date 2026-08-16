@@ -9,9 +9,7 @@ export const loginApi = (payload) =>
 export const getMeApi = () =>
   client.get("/auth/me").then((r) => r.data);
 
-// The backend exposes no /logout route — the auth cookie set via
-// res.cookie() is not httpOnly, so we can clear it client-side.
-export const clearAuthCookie = () => {
-  document.cookie =
-    "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-};
+// The auth cookie is httpOnly (set by the backend), so it can only be
+// cleared server-side via this endpoint - not via document.cookie.
+export const logoutApi = () =>
+  client.post("/auth/logout").then((r) => r.data);
